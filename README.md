@@ -1,2 +1,3 @@
-# This is a test README file.
-This repository is for testing purposes.
+# test_github
+
+This is a test repository.
