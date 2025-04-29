@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang=\"en\">
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title>24 - The Number Game</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --accent-color: #e74c3c;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+            background-color: #c0392b;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 100px;
+            height: 4px;
+            background: var(--primary-color);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .game-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .card {
+            width: 80px;
+            height: 120px;
+            background-color: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .operations {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .operation {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .operation:hover {
+            transform: scale(1.1);
+            background-color: #27ae60;
+        }
+
+        .result-display {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.5rem;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            flex: 1;
+            margin: 10px;
+            min-width: 200px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        canvas {
+            width: 100%;
+            max-height: 400px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--accent-color);
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            nav {
+                flex-wrap: wrap;
+            }
+
+            nav a {
+                margin: 5px;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .card {
+                width: 60px;
+                height: 90px;
+                font-size: 1.5rem;
+            }
+
+            .operation {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+
+        .difficulty-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .difficulty-btn {
+            background-color: var(--light-color);
+            border: 2px solid var(--primary-color);
+            color: var(--dark-color);
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .difficulty-btn:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .difficulty-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .hint-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            margin: 10px;
+        }
+
+        .hint-btn:hover {
+            background-color: #27ae60;
+        }
+
+        .reset-btn {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            margin: 10px;
+        }
+
+        .reset-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .solution-display {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(46, 204, 113, 0.1);
+            border-radius: 5px;
+            font-size: 1.1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class=\"container\">
+            <h1>24 Game Challenge</h1>
+            <p>Test your mental math skills with the classic 24 game</p>
+            <nav>
+                <a href=\"#game\">Play Game</a>
+                <a href=\"#stats\">Statistics</a>
+                <a href=\"#leaderboard\">Leaderboard</a>
+                <a href=\"#about\">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class=\"container\">
+        <section class=\"hero\">
+            <h2>Make 24 with Four Numbers</h2>
+            <p>Use addition, subtraction, multiplication, and division to make exactly 24 with all four numbers. Each number must be used exactly once.</p>
+            <button class=\"btn\" id=\"start-game\">Start Playing</button>
+        </section>
+
+        <section id=\"game\" class=\"section\">
+            <h2 class=\"section-title\">Play the 24 Game</h2>
+            <div class=\"game-container\">
+                <div class=\"difficulty-selector\">
+                    <button class=\"difficulty-btn active\" data-difficulty=\"easy\">Easy</button>
+                    <button class=\"difficulty-btn\" data-difficulty=\"medium\">Medium</button>
+                    <button class=\"difficulty-btn\" data-difficulty=\"hard\">Hard</button>
+                </div>
+
+                <div class=\"timer\">Time: <span id=\"time-display\">00:00</span></div>
+
+                <div class=\"card-container\" id=\"cards\">
+                    <div class=\"card\" data-value=\"4\">4</div>
+                    <div class=\"card\" data-value=\"7\">7</div>
+                    <div class=\"card\" data-value=\"8\">8</div>
+                    <div class=\"card\" data-value=\"8\">8</div>
+                </div>
+
+                <div class=\"operations\">
+                    <div class=\"operation\" data-op=\"+\">+</div>
+                    <div class=\"operation\" data-op=\"-\">-</div>
+                    <div class=\"operation\" data-op=\"×\">×</div>
+                    <div class=\"operation\" data-op=\"÷\">÷</div>
+                </div>
+
+                <div class=\"result-display\">
+                    <div id=\"expression\">Select cards and operations</div>
+                    <div id=\"result\"></div>
+                </div>
+
+                <div class=\"solution-display\" id=\"solution-display\">
+                    A possible solution: 8 × (4 - 7 ÷ 8) = 24
+                </div>
+
+                <div class=\"button-container\">
+                    <button class=\"hint-btn\" id=\"hint-btn\">Get Hint</button>
+                    <button class=\"reset-btn\" id=\"reset-btn\">New Game</button>
+                </div>
+            </div>
+        </section>
+
+        <section id=\"stats\" class=\"section\">
+            <h2 class=\"section-title\">Your Statistics</h2>
+            
+            <div class=\"stats-container\">
+                <div class=\"stat-card\">
+                    <h3>Games Played</h3>
+                    <div class=\"value\" id=\"games-played\">42</div>
+                </div>
+                <div class=\"stat-card\">
+                    <h3>Games Won</h3>
+                    <div class=\"value\" id=\"games-won\">28</div>
+                </div>
+                <div class=\"stat-card\">
+                    <h3>Win Rate</h3>
+                    <div class=\"value\" id=\"win-rate\">66.7%</div>
+                </div>
+                <div class=\"stat-card\">
+                    <h3>Average Time</h3>
+                    <div class=\"value\" id=\"avg-time\">01:23</div>
+                </div>
+            </div>
+
+            <div class=\"chart-container\">
+                <canvas id=\"performance-chart\"></canvas>
+            </div>
+        </section>
+
+        <section id=\"leaderboard\" class=\"section\">
+            <h2 class=\"section-title\">Leaderboard</h2>
+            <div class=\"table-responsive\">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Games Won</th>
+                            <th>Average Time</th>
+                            <th>Best Time</th>
+                        </tr>
+                    </thead>
+                    <tbody id=\"leaderboard-body\">
+                        <!-- Will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id=\"about\" class=\"section\">
+            <h2 class=\"section-title\">About the 24 Game</h2>
+            <div class=\"game-container\">
+                <p>The 24 Game is a mathematical card game where the objective is to find a way to manipulate four numbers to get the result of 24. You can add, subtract, multiply and divide, using each number exactly once.</p>
+                <p>This classic game was invented in the 1960s and has been used in schools worldwide to help students improve their mental math skills and arithmetic fluency.</p>
+                <p>Playing the 24 Game regularly can help improve:</p>
+                <ul>
+                    <li>Mental calculation speed</li>
+                    <li>Number sense and fluency</li>
+                    <li>Problem-solving skills</li>
+                    <li>Mathematical creativity</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <div class=\"modal\" id=\"win-modal\">
+        <div class=\"modal-content\">
+            <span class=\"close-modal\" id=\"close-win-modal\">&times;</span>
+            <h2>Congratulations!</h2>
+            <p>You found a solution to make 24!</p>
+            <p>Time: <span id=\"win-time\">00:42</span></p>
+            <button class=\"btn\" id=\"next-game-btn\">Play Again</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class=\"container\">
+            <p>&copy; 2023 24 Game Challenge. All rights reserved.</p>
+            <div class=\"social-icons\">
+                <a href=\"#\"><i class=\"fa\">&#xf09a;</i></a>
+                <a href=\"#\"><i class=\"fa\">&#xf099;</i></a>
+                <a href=\"#\"><i class=\"fa\">&#xf16d;</i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Game variables
+            let selectedCards = [];
+            let selectedOps = [];
+            let currentExpression = [];
+            let timer = null;
+            let seconds = 0;
+            let gameActive = false;
+            let currentDifficulty = 'easy';
+            let gameStats = {
+                gamesPlayed: 42,
+                gamesWon: 28,
+                totalTime: 3500,
+                history: [
+                    { date: '2023-05-01', won: true, time: 65 },
+                    { date: '2023-05-02', won: false, time: 120 },
+                    { date: '2023-05-03', won: true, time: 45 },
+                    { date: '2023-05-04', won: true, time: 55 },
+                    { date: '2023-05-05', won: false, time: 130 },
+                    { date: '2023-05-06', won: true, time: 62 },
+                    { date: '2023-05-07', won: true, time: 48 },
+                ]
+            };
+
+            // Leaderboard data
+            const leaderboardData = [
+                { rank: 1, name: 'MathWizard', wins: 156, avgTime: '00:42', bestTime: '00:19' },
+                { rank: 2, name: 'NumberNinja', wins: 145, avgTime: '00:45', bestTime: '00:22' },
+                { rank: 3, name: 'CalculusKing', wins: 132, avgTime: '00:51', bestTime: '00:25' },
+                { rank: 4, name: 'AlgebraAce', wins: 120, avgTime: '00:53', bestTime: '00:28' },
+                { rank: 5, name: 'MathMaster', wins: 115, avgTime: '00:55', bestTime: '00:30' },
+                { rank: 6, name: 'ProblemSolver', wins: 98, avgTime: '01:02', bestTime: '00:31' },
+                { rank: 7, name: 'LogicLord', wins: 87, avgTime: '01:05', bestTime: '00:35' },
+                { rank: 8, name: 'StatGenius', wins: 82, avgTime: '01:09', bestTime: '00:37' },
+                { rank: 9, name: 'You', wins: 28, avgTime: '01:23', bestTime: '00:42' },
+                { rank: 10, name: 'NumberNewbie', wins: 15, avgTime: '01:45', bestTime: '01:02' },
+            ];
+
+            // Card combinations for different difficulty levels
+            const cardSets = {
+                easy: [
+                    [3, 3, 6, 8],
+                    [2, 4, 8, 10],
+                    [4, 6, 6, 6],
+                    [2, 2, 6, 12],
+                    [1, 4, 6, 10]
+                ],
+                medium: [
+                    [4, 7, 8, 8],
+                    [3, 5, 7, 9],
+                    [2, 5, 5, 10],
+                    [1, 5, 8, 8],
+                    [3, 3, 8, 9]
+                ],
+                hard: [
+                    [5, 5, 5, 9],
+                    [1, 3, 4, 6],
+                    [3, 3, 7, 7],
+                    [2, 3, 3, 13],
+                    [2, 2, 4, 13]
+                ]
+            };
+
+            // Solutions for hint feature
+            const solutions = {
+                '3,3,6,8': '(8 - 3) × 6 - 3 = 24',
+                '2,4,8,10': '(10 - 2) × 4 - 8 = 24',
+                '4,6,6,6': '4 × 6 + 6 - 6 = 24',
+                '2,2,6,12': '12 × 2 + 6 ÷ 2 = 24',
+                '1,4,6,10': '(10 - 1) × 4 - 6 = 24',
+                '4,7,8,8': '8 × (4 - 7 ÷ 8) = 24',
+                '3,5,7,9': '(9 - 5) × 7 - 3 = 24',
+                '2,5,5,10': '5 × 5 - 10 ÷ 2 = 24',
+                '1,5,8,8': '(8 + 1) × 8 ÷ 5 = 24',
+                '3,3,8,9': '(9 + 3) × (8 ÷ 3) = 24',
+                '5,5,5,9': '5 × 5 - 5 + 9 = 24',
+                '1,3,4,6': '(6 - 1) × 4 × 3 = 24',
+                '3,3,7,7': '(7 - 3) × (7 - 3) × 3 = 24',
+                '2,3,3,13': '(13 - 3) × 3 - 2 = 24',
+                '2,2,4,13': '(13 - 2) × 2 + 4 = 24'
+            };
+
+            // DOM elements
+            const cards = document.querySelectorAll('.card');
+            const operations = document.querySelectorAll('.operation');
+            const expressionDisplay = document.getElementById('expression');
+            const resultDisplay = document.getElementById('result');
+            const timeDisplay = document.getElementById('time-display');
+            const startGameBtn = document.getElementById('start-game');
+            const resetBtn = document.getElementById('reset-btn');
+            const hintBtn = document.getElementById('hint-btn');
+            const solutionDisplay = document.getElementById('solution-display');
+            const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+            const winModal = document.getElementById('win-modal');
+            const closeWinModal = document.getElementById('close-win-modal');
+            const winTime = document.getElementById('win-time');
+            const nextGameBtn = document.getElementById('next-game-btn');
+            
+            // Initialize the game
+            updateStats();
+            populateLeaderboard();
+            createChart();
+
+            // Add event listeners
+            startGameBtn.addEventListener('click', () => {
+                document.getElementById('game').scrollIntoView({ behavior: 'smooth' });
+                if (!gameActive) {
+                    startNewGame();
+                }
+            });
+
+            resetBtn.addEventListener('click', startNewGame);
+
+            hintBtn.addEventListener('click', showHint);
+
+            closeWinModal.addEventListener('click', () => {
+                winModal.style.display = 'none';
+            });
+
+            nextGameBtn.addEventListener('click', () => {
+                winModal.style.display = 'none';
+                startNewGame();
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === winModal) {
+                    winModal.style.display = 'none';
+                }
+            });
+
+            // Attach event listeners to cards
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    if (!gameActive) return;
+                    
+                    if (!card.classList.contains('selected') && selectedCards.length < 2) {
+                        card.classList.add('selected');
+                        selectedCards.push(card);
+                        updateExpression();
+                    } else if (card.classList.contains('selected')) {
+                        card.classList.remove('selected');
+                        selectedCards = selectedCards.filter(c => c !== card);
+                        updateExpression();
+                    }
+                });
+            });
+
+            // Attach event listeners to operations
+            operations.forEach(op => {
+                op.addEventListener('click', () => {
+                    if (!gameActive) return;
+                    
+                    if (selectedCards.length === 2) {
+                        const value1 = parseInt(selectedCards[0].dataset.value);
+                        const value2 = parseInt(selectedCards[1].dataset.value);
+                        const operation = op.dataset.op;
+                        
+                        let result;
+                        switch (operation) {
+                            case '+':
+                                result = value1 + value2;
+                                break;
+                            case '-':
+                                result = value1 - value2;
+                                break;
+                            case '×':
+                                result = value1 * value2;
+                                break;
+                            case '÷':
+                                if (value2 === 0 || value1 % value2 !== 0) {
+                                    resultDisplay.textContent = \"Invalid division!\";
+                                    return;
+                                }
+                                result = value1 / value2;
+                                break;
+                        }
+                        
+                        // Create a new card with the result
+                        const newCard = document.createElement('div');
+                        newCard.className = 'card';
+                        newCard.textContent = result;
+                        newCard.dataset.value = result;
+                        
+                        // Add event listener to the new card
+                        newCard.addEventListener('click', () => {
+                            if (!gameActive) return;
+                            
+                            if (!newCard.classList.contains('selected') && selectedCards.length < 2) {
+                                newCard.classList.add('selected');
+                                selectedCards.push(newCard);
+                                updateExpression();
+                            } else if (newCard.classList.contains('selected')) {
+                                newCard.classList.remove('selected');
+                                selectedCards = selectedCards.filter(c => c !== newCard);
+                                updateExpression();
+                            }
+                        });
+                        
+                        // Remove the selected cards
+                        const cardContainer = document.getElementById('cards');
+                        selectedCards.forEach(card => {
+                            cardContainer.removeChild(card);
+                        });
+                        
+                        // Add the new card
+                        cardContainer.appendChild(newCard);
+                        
+                        // Update expression history
+                        currentExpression.push(`${value1} ${operation} ${value2} = ${result}`);
+                        expressionDisplay.textContent = currentExpression.join(' → ');
+                        
+                        // Clear selections
+                        selectedCards = [];
+                        
+                        // Check if we've reached the goal
+                        const remainingCards = document.querySelectorAll('.card');
+                        if (remainingCards.length === 1 && parseInt(remainingCards[0].dataset.value) === 24) {
+                            endGame(true);
+                        } else if (remainingCards.length === 1 && parseInt(remainingCards[0].dataset.value) !== 24) {
+                            resultDisplay.textContent = \"Not quite 24! Try again.\";
+                        }
+                    }
+                });
+            });
+
+            // Attach event listeners to difficulty buttons
+            difficultyBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    difficultyBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentDifficulty = btn.dataset.difficulty;
+                    startNewGame();
+                });
+            });
+
+            // Function to start a new game
+            function startNewGame() {
+                // Reset game state
+                stopTimer();
+                seconds = 0;
+                timeDisplay.textContent = '00:00';
+                selectedCards = [];
+                selectedOps = [];
+                currentExpression = [];
+                expressionDisplay.textContent = 'Select cards and operations';
+                resultDisplay.textContent = '';
+                solutionDisplay.style.display = 'none';
+                
+                // Clear the card container
+                const cardContainer = document.getElementById('cards');
+                cardContainer.innerHTML = '';
+                
+                // Get a random set of cards based on difficulty
+                const cardSet = getRandomCardSet();
