@@ -1,8 +1,2 @@
-# test_github
-# 123
-
-
-test a pull request general by AI
-
-add some things for test
-
+# This is a test README file.
+This repository is for testing purposes.
