@@ -1,2 +1,2 @@
 # This is a test README file.
-This repository is for testing purposes.
+This file was automatically created by Pokee.
