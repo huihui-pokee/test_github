@@ -1,2 +1,2 @@
-# This is a test README file.
-This file was automatically created by Pokee.
+# Updated README
+This file was updated by Pokee.
