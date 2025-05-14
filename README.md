@@ -1,10 +1,3 @@
-# test_github
+# README
 
-This is a test repository.
-
-add some text for test case
-
-# Details
-
-- some tickets
-- some tasks
+This is a placeholder README file.
