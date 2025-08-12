@@ -1,18 +1,9 @@
-# Galaxy S24 Product Page
+# Galaxy S24 Series Web Scraper & Analysis
 
-This repository contains the source code for a static product page showcasing the Samsung Galaxy S24 smartphone.
+This repository contains the code and data related to scraping and analyzing the product page for the Samsung Galaxy S24 series.
 
-## Contents
+## Repository Contents
 
-- `galaxy_s24_product_page.html`: This is the main HTML file that structures and displays the content for the product page. It includes details about the phone's features, specifications, and design.
+- **`galaxy_s24_product_page.html`**: This is a static HTML file of the Samsung Galaxy S24 product page. It serves as the primary data source for this project, capturing the features, specifications, and marketing content related to the Galaxy S24, S24+, and S24 Ultra.
 
-## Description
-
-The `galaxy_s24_product_page.html` file is a self-contained web page. It uses HTML for structure, embedded CSS for styling, and includes base64-encoded images to render a complete and visually appealing product showcase without external dependencies. The page is designed to be a static representation of a modern smartphone product landing page.
-
-## How to Use
-
-To view the product page, simply open the `galaxy_s24_product_page.html` file in any modern web browser.
-
-## Others
-this is a demo project
+- **`README.md`**: This file, p... (truncated - full content available in input_text_from_queryable_tags)
