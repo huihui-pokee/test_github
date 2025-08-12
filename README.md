@@ -13,3 +13,6 @@ The `galaxy_s24_product_page.html` file is a self-contained web page. It uses HT
 ## How to Use
 
 To view the product page, simply open the `galaxy_s24_product_page.html` file in any modern web browser.
+
+## Others
+this is a demo project
